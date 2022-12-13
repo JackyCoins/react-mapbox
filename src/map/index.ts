@@ -1,0 +1,1 @@
+export { useMapFromDI } from "./MapDIContext";

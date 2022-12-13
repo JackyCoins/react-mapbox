@@ -1,24 +1,14 @@
-import { useEffect, useRef } from "react";
-import { MapAdapter } from "./MapAdapter";
-import type { Map as Mapbox } from "mapbox-gl";
+import { FC } from "react";
+import { useMapFromDI } from "./MapDIContext";
 
-export const BaseMap = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const mapAdapterRef = useRef<Mapbox>();
+type Props = {
+  name: string;
+};
+export const BaseMap: FC<Props> = ({ name }) => {
+  const mapName = `${name}-map`;
+  const mapbox = useMapFromDI(mapName);
 
-  const createMapAdapter = async () => {
-    if (containerRef.current) {
-      mapAdapterRef.current = await new MapAdapter().init(containerRef.current);
-    }
-  };
+  console.log("mapbox", mapbox);
 
-  useEffect(() => {
-    createMapAdapter();
-
-    return () => {
-      mapAdapterRef.current?.remove();
-    };
-  }, []);
-
-  return <div ref={containerRef} />;
+  return <div id={mapName} />;
 };
